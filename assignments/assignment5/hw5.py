@@ -144,11 +144,10 @@ class QuestionnaireAnalysis:
         40 years of age, and the average score in each of the five questions.
     """
         df = pd.DataFrame(data=self.data, columns=self.Q_KEYS)
-        df_index = pd.concat([df.index.to_series(), self.data['gender'], self.data['age'] >= 40], axis=1)
+        df_index = pd.concat([df.index.to_series(), self.data['gender'], self.data['age'] > 40], axis=1)
         df_index = pd.MultiIndex.from_frame(df_index, names=[0, 'gender', 'age'])
         df.set_index(df_index, inplace=True)
-        df.dropna()
-        return df.groupby(['gender', 'age']).mean()
+        return df.groupby(['gender', 'age'], dropna=False).mean()
 
 
 
